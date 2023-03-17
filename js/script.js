@@ -5,7 +5,8 @@ const username = "elahoda";
 const repos = document.querySelector(".repos");
 const repoData = document.querySelector(".repo-data");
 const repoList = document.querySelector(".repo-list");
-
+const backToRepo = document.querySelector(".view-repos");
+const filterInput = document.querySelector(".filter-repos");
 
 
 const getProfile = async function() {
@@ -42,11 +43,14 @@ const getRepo = async function () {
 
 
 const displayRepo = function (repos){
+    filterInput.classList.remove("hide");
+
     for (const repo of repos) {
     const repoItem = document.createElement("li");
     repoItem.classList.add("repo");
     repoItem.innerHTML = `<h3>${repo.name}</h3>`;
     repoList.append(repoItem);
+    
 }
 
 };
@@ -90,5 +94,34 @@ const specificRepo = function (repoInfo, languages){
     <p>Languages: ${languages.join(", ")}</p>
     <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`;
     
+    backToRepo.classList.remove("hide");
+    
     repoData.append(div);
 };
+
+backToRepo.addEventListener("click", function(e){
+   repos.classList.remove("hide");
+   repoData.classList.add("hide"); 
+    backToRepo.classList.add("hide");
+
+});
+
+filterInput.addEventListener("input", function(e){
+    const searchValue = e.target.value;
+    //console.log(searchValue);
+    const repos = document.querySelectorAll(".repo");
+    const searchLower = searchValue.toLowerCase();
+    
+
+    for (const repo of repos) {
+     const repoLower = repo.innerText.toLowerCase();
+
+        if (repoLower.includes(searchLower)) {
+            repo.classList.remove("hide")
+        }  else {
+            repo.classList.add("hide");
+        }
+
+    }
+});
+
